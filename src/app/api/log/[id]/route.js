@@ -30,4 +30,23 @@ export async function DELETE(req, { params }) {
   });
 }
 
-export async function PATCH() {}
+export async function PATCH(rep, { params }) {
+  const { id } = params;
+  const body = req.json();
+
+  const { data, error } = await supabase
+    .from("log")
+    .update(body)
+    .eq("id", id.toString())
+    .select();
+
+  if (error != null) {
+    return new Response(JSON.stringify({ error: error.message }), {
+      status: 500,
+    });
+  }
+  return new Response(JSON.stringify({ success: true, data }), {
+    status: 200,
+    headers: { "Content-Type": "application/json" },
+  });
+}
