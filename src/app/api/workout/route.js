@@ -1,3 +1,4 @@
+// Api routes for single workouts
 import { supabase } from "@/app/lib/supabaseClient";
 
 export async function GET() {

@@ -1,27 +1,33 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Workout } from "../lib/workoutType";
+import { Workout } from "../lib/types";
 
 function Page() {
   const [workoutItem, setWorkoutItem] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const newWorkoutItem = new Workout("squat", "legs", 3, 10, 100, 0);
+    const newWorkoutItem = new Workout("squat", "legs");
+    //Fetching Single Workouts
     const fetchData = async () => {
-      let response = await fetch("/api/workout");
-      let data = await response.json();
-      setWorkoutItem(data);
-      setLoading(false);
-      console.log(workoutItem);
+      try {
+        const response = await axios.get("/api/workout");
+        if (response != null && response.status == 200) {
+          console.log(response.data);
+          setWorkoutItem(response.data);
+          setLoading(false);
+        }
+      } catch (error) {
+        alert(error);
+      }
     };
-
-    const postData = async () => {
+    // Posting Single Workouts
+    const postWorkout = async () => {
       const response = await axios.post("/api/workout", newWorkoutItem);
     };
     fetchData();
-    postData();
+    //postWorkout();
   }, []);
 
   const Display = () => {
