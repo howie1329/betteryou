@@ -30,7 +30,7 @@ export async function DELETE(req, { params }) {
   });
 }
 
-export async function PATCH(rep, { params }) {
+export async function PATCH(req, { params }) {
   const { id } = params;
   const body = req.json();
 
