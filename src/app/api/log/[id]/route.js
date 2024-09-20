@@ -1,6 +1,7 @@
 // api routes for logs
 import { supabase } from "@/app/lib/supabaseClient";
 
+// add params req to get single log
 export async function GET() {
   let { data: log, error } = await supabase.from("log").select("*");
 
@@ -15,16 +16,9 @@ export async function GET() {
   });
 }
 
-export async function POST(req) {
-  const body = await req.json();
-
-  const { data, error } = await supabase.from("log").insert([body]).select();
-
-  if (!body) {
-    return new Response(JSON.stringify({ error: "Invalid data" }), {
-      status: 400,
-    });
-  }
+export async function DELETE(req, { params }) {
+  const { id } = params;
+  const { error } = await supabase.from("log").delete().eq("id", id);
 
   if (error) {
     return new Response(JSON.stringify({ error: error.message }), {
@@ -32,8 +26,10 @@ export async function POST(req) {
     });
   }
 
-  return new Response(JSON.stringify({ success: true, data }), {
-    status: 201,
+  return new Response(JSON.stringify(item), {
+    status: 200,
     headers: { "Content-Type": "application/json" },
   });
 }
+
+export async function PATCH() {}
