@@ -7,6 +7,13 @@ function Page() {
   const [workoutItem, setWorkoutItem] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  const handleDelete = async (id) => {
+    const error = await axios.delete(`/api/log/${id}`);
+    if (error.status != 200) {
+      alert(error);
+    }
+  };
+
   useEffect(() => {
     const newWorkoutItem = new Workout("squat", "legs");
     //Fetching Single Workouts
@@ -35,8 +42,17 @@ function Page() {
       return <p>Loading</p>;
     } else {
       return (
-        workoutItem &&
-        workoutItem.map((item) => <p key={item.id}>{item.name}</p>)
+        <>
+          {workoutItem &&
+            workoutItem.map((item) => <p key={item.id}>{item.name}</p>)}
+          <button
+            onClick={(e) =>
+              handleDelete("3296aed9-7489-40b4-a423-18994d99a18f")
+            }
+          >
+            Delete Me
+          </button>
+        </>
       );
     }
   };

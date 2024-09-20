@@ -18,15 +18,13 @@ export async function GET() {
 
 export async function DELETE(req, { params }) {
   const { id } = params;
-  const { error } = await supabase.from("log").delete().eq("id", id);
-
-  if (error) {
+  const { error } = await supabase.from("log").delete().eq("id", id.toString());
+  if (error != null) {
     return new Response(JSON.stringify({ error: error.message }), {
       status: 500,
     });
   }
-
-  return new Response(JSON.stringify(item), {
+  return new Response(JSON.stringify({ success: true }), {
     status: 200,
     headers: { "Content-Type": "application/json" },
   });
